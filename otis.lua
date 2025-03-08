@@ -408,9 +408,9 @@ function enc(n, d)
       params:delta("2loop_end", d / 12)
     end
   elseif page == 1 then
-    mix_enc(n, fine_adjust == true and d * 0.01 or d)
+    mix_enc(n, fine_adjust == true and d * 0.2 or d)
   elseif page == 2 then
-    play_enc(n, fine_adjust == true and d * 0.01 or d)
+    play_enc(n, fine_adjust == true and d * 0.1 or d)
   elseif page == 3 then
     edit_enc(n, fine_adjust == true and d * 0.01 or d)
   end
