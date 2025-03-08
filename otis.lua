@@ -76,6 +76,7 @@ local m = midi.connect()
 
 local alt = 0
 local page = 2
+local page_enc = 10  -- start at center of 0-19 range for page 2
 local page_time = 1
 local skip_time_L = 1
 local skip_time_R = 1
@@ -385,7 +386,10 @@ function enc(n, d)
     if alt == 1 then
       fine_adjust = d > 0 and true or false
     else
-      page = util.clamp(page + d, 1, 3)
+      -- page 1 and 3 are 5 encoder ticks wide, page 2 10 ticks.
+      -- gives scroll speed similar to norns menu
+      page_enc = util.clamp(page_enc + d, 0, 19)
+      page = ((page_enc + 5) // 10) + 1
       page_time = util.time()
     end
   end
