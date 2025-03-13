@@ -1,21 +1,14 @@
 --
---          otis
---      stereo tape     _
---        delay/         | \
---          looper        | |
---                         | |
---    |\                   | |
---   /, ~\              / /
---  X     `-.........-------./ /
---   ~-. ~  ~              |
---      \             /   |
---       \  /_     ___\ /
---       | /\ ~~~~~   \ |
---       | | \           || |
---       | |\ \         || )
---      (_/ (_/       ((_/
+--          sito
+--      stereo tape
+--        delay/
+--          looper
+--   _._     _,-'""`-._
+--  (,-.`._,'(       |\`-/|
+--      `-.-' \ )-`( , o o)
+--            `-    \`_`"'-
 --
---
+-- sito is an experimental fork of otis
 --
 -- there are three pages of
 -- controls, mix, play, and edit.
@@ -70,7 +63,7 @@ local g = grid.connect()
 local g_alt = false
 
 local sc = include("lib/tlps")
-sc.file_path = "/home/we/dust/audio/tape/otis."
+sc.file_path = "/home/we/dust/audio/tape/sito."
 
 local m = midi.connect()
 
