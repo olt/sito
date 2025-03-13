@@ -1,11 +1,34 @@
 
-# otis v2.3
+# sito
 
 ![pixelcat](assets/pixelotis.png)
 
 stereo "tape" delay/looper thing for norns
 
 join the conversation at - https://llllllll.co/t/22149
+
+sito is an experimental fork of otis by @justmat
+
+Installation:
+
+sito is not available from maiden. Open repl on norns.local and type the follwowing to install sito:
+
+```
+;install https://github.com/olt/sito.git
+```
+
+Changes to otis:
+
+- single page interface,
+- speed, flip and LFO now behave the same whether quantization is enabled or not,
+- fine parameter adjustments differ depending on the parameter (more coarse for
+  volume, but identical for start position),
+- reduce E1 sensitivity, allowing easier selection of pages
+
+TODO:
+- visualize when feedback is set to unity
+- minor tweaking of UI elements
+- figure out if random graphics glitch is a bug?
 
 ---
 
