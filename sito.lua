@@ -59,7 +59,7 @@
 -- https://llllllll.co/t/22149
 
 
-engine.name = "Decimator"
+engine.name = "DecimatorSito"
 
 local g = grid.connect()
 local g_alt = false

@@ -1,4 +1,4 @@
-Engine_Decimator : CroneEngine {
+Engine_DecimatorSito : CroneEngine {
   //Decimate
   var srate=48000, sdepth=32;
 
