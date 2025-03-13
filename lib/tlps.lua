@@ -6,6 +6,9 @@
 
 sc = {}
 
+sc.speeds = {1, 1}
+sc.quantize = true
+
 -- overwrite this in user script for custom paths
 sc.file_path = "/home/we/dust/audio/tape/tlps."
 
@@ -101,6 +104,33 @@ local function load_sample(file, buf)
   end
 end
 
+local function quantize_speed(speed, quantizations)
+  local reverse = false
+  if speed < 0 then
+    speed = -speed
+    reverse = true
+  end
+  local quantized = 0
+  local min_diff = speed
+  for _, q in ipairs(quantizations) do
+    if speed <= q then
+      if (q - speed) < min_diff then
+        quantized = q
+        break
+      else
+        break
+      end
+    else
+      quantized = q
+      min_diff = speed - q
+    end
+  end
+  if reverse then
+    quantized = -quantized
+  end
+
+  return quantized
+end
 
 function sc.init()
   audio.level_cut(1.0)
@@ -173,7 +203,15 @@ function sc.init()
     params:set_action(i .. "vol", function(x) softcut.level(i, x) end)
     -- tape speed controls
     params:add_control(i .. "speed", i .. " speed", controlspec.new(-4, 4, "lin", 0.01, 1, ""))
-    params:set_action(i .. "speed", function(x) softcut.rate(i, x) end)
+    params:set_action(i .. "speed", function(x)
+      if sc.quantize then
+        rate = quantize_speed(x, sc.quantize)
+      else
+        rate = x
+      end
+      sc.speeds[i] = rate
+      softcut.rate(i, rate)
+    end)
     -- tape speed slew controls
     params:add_control(i .. "speed_slew", i .. " speed slew", controlspec.new(0, 1, "lin", 0, 0.1, ""))
     params:set_action(i .. "speed_slew", function(x) softcut.rate_slew_time(i, x) end)

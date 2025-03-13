@@ -3,7 +3,6 @@
 --
 --
 -- add your scale name to the spds.names table, then define your scale below.
--- scales should be 6 entries long.
 
 -- Ratio Table - Equal Temperament
 -- 1.00000: Unison
@@ -41,21 +40,32 @@ spds.octaves = {
 }
 
 spds.fifths = {
+  0.250,
   0.500,
   0.750,
   1.000,
   1.500,
   2.000,
-  3.000
+  3.000,
+  4.000
 }
 
 spds.major = {
+  1.00000/2,
+  1.12246/2,
+  1.25992/2,
+  1.33484/2,
+  1.49830/2,
+  1.68179/2,
+  1.88774/2,
+  1.00000,
   1.12246,
   1.25992,
   1.33484,
   1.49830,
   1.68179,
-  1.88774
+  1.88774,
+  2.00000
 }
 
 return spds

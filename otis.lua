@@ -86,8 +86,6 @@ local muted_R = false
 local pre_mute_vol_R = 0
 local rec1 = true
 local rec2 = true
-local flipped_L = false
-local flipped_R = false
 local skipped_L = false
 local skipped_R = false
 local fine_adjust = false
@@ -127,43 +125,12 @@ end
 
 local function flip(n)
   -- flip tape direction
-  local spd = params:get(n .. "speed")
-  spd = -spd
-  params:set(n .. "speed", spd)
-  if n == 1 then
-    flipped_L = not flipped_L
-  else
-    flipped_R = not flipped_R
-  end
-end
-
-
-local function check_flip_set_speed(i, val)
-  if i == 1 and flipped_L then
-    params:set("1speed", -val)
-  elseif i == 2 and flipped_R then
-    params:set("2speed", -val)
-  else
-    params:set(i .. "speed", val)
-  end
+  params:set(n .. "speed", -params:get(n .. "speed"))
 end
 
 
 local function speed_control(n, d)
-  -- free speed controls
-  if params:get("speed_controls") == 1 then
-    params:delta(n .. "speed", d)
-  -- quantized speed controls
-  else
-    local speed_set = spds.names[params:get("speed_controls")]
-
-    if d < 0 then
-      speed_index[n] = util.clamp(speed_index[n] - 1, 1, #spds[speed_set])
-    else
-      speed_index[n] = util.clamp(speed_index[n] + 1, 1, #spds[speed_set])
-    end
-    params:set(n .. "speed", spds[speed_set][speed_index[n]])
-  end
+  params:delta(n .. "speed", d)
 end
 
 
@@ -231,25 +198,9 @@ function lfo.process()
         params:set(lfo_targets[target], util.clamp(lfo[i].slope, -1, 1))
       -- speed
       elseif target == 10 then
-        -- free speed/no speed control
-        if params:get("speed_controls") == 1 then
-          check_flip_set_speed(1, lfo[i].slope)
-        -- quantized speed
-        elseif params:get("speed_controls") > 1 then
-          local speed_set = spds.names[params:get("speed_controls")]
-          speed_index[1] = util.round(util.linlin(-1.0,1.0,1,#spds[speed_set], lfo[i].slope))
-          check_flip_set_speed(1, spds[speed_set][speed_index[1]])
-        end
+        params:set("1speed", lfo[i].slope)
       elseif target == 11 then
-        -- free speed/no speed control
-        if params:get("speed_controls") == 1 then
-          check_flip_set_speed(2, lfo[i].slope)
-        -- quantized speed
-        elseif params:get("speed_controls") > 1 then
-          local speed_set = spds.names[params:get("speed_controls")]
-          speed_index[2] = util.round(util.linlin(-1.0,1.0,1,#spds[speed_set], lfo[i].slope))
-          check_flip_set_speed(2, spds[speed_set][speed_index[2]])
-        end
+        params:set("2speed", lfo[i].slope)
       -- record L on/off
       elseif target == 12 then
         if lfo[i].trig and lfo[i].slope > 0 then
@@ -574,6 +525,7 @@ function init()
 
   params:add_option("skip_controls", "skip controls", skip_options, 1)
   params:add_option("speed_controls", "speed controls", spds.names, 1)
+  params:set_action("speed_controls", function(x) sc.quantize = spds[spds.names[x]] end)
 
   params:add{
     type = "option", id = "audio_routing", name = "audio routing", 
@@ -987,7 +939,7 @@ function draw_buffer(n, x_off, y_off)
   screen.level((page == 2 and alt == 0) and 15 or 5)
   local center = x_off + buf_width//2
   screen.move(center, y_top)
-  local speed = params:get(n .. "speed")
+  local speed = sc.speeds[n]
   screen.text_center(string.format("%.2f", speed))
 
   screen.move(center, y_top+1)
