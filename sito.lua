@@ -3,12 +3,14 @@
 --      stereo tape
 --        delay/
 --          looper
---   _._     _,-'""`-._
---  (,-.`._,'(       |\`-/|
---      `-.-' \ )-`( , o o)
---            `-    \`_`"'-
 --
--- sito is an experimental fork of otis
+--   _._    _,-'""`-._
+--  (,--.`._,'(       |\`-/|
+--      `-.-' \ )-`( , o o)
+--            `-   \`_`"'-
+--
+-- sito is an experimental
+-- fork of otis
 --
 -- there are three pages of
 -- controls, mix, play, and edit.
